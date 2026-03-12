@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JOBMAILER.DE — Ausbildung KFZ-Mechaniker</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans+Arabic:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold: #f5c842;
+  --gold2: #ffd966;
+  --bg: #0d0d0d;
+  --bg2: #111;
+  --bg3: #0a0a0a;
+  --border: #1e1e1e;
+  --text: #e8e8e0;
+  --muted: #555;
+  --green: #4caf50;
+  --blue: #42a5f5;
+  --red: #ef5350;
+  --orange: #f5a842;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: 'IBM Plex Sans Arabic', sans-serif; min-height: 100vh; overflow-x: hidden; }
+
+/* Grid background */
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image: linear-gradient(rgba(245,200,66,.03) 1px, transparent 1px), linear-gradient(90deg, rgba(245,200,66,.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* ── HEADER ── */
+.header {
+  position: relative; z-index: 10;
+  padding: 20px 28px 16px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: flex-end; gap: 16px; flex-wrap: wrap;
+}
+.logo { font-family: 'Bebas Neue', sans-serif; font-size: 42px; letter-spacing: 3px; color: var(--gold); line-height: 1; }
+.header-info { margin-bottom: 4px; }
+.header-sub { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 6px; }
+.badge { display: inline-block; background: var(--bg2); border: 1px solid var(--gold); color: var(--gold); font-family: 'IBM Plex Mono', monospace; font-size: 9px; padding: 2px 8px; letter-spacing: 2px; margin-left: 4px; }
+.badge.g { border-color: var(--green); color: var(--green); }
+.badge.r { border-color: var(--red); color: var(--red); }
+.badge.b { border-color: var(--blue); color: var(--blue); }
+
+/* ── SETUP SCREEN ── */
+#setup-screen {
+  position: fixed; inset: 0; z-index: 100;
+  background: var(--bg);
+  display: flex; align-items: flex-start; justify-content: center;
+  padding: 20px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.setup-box {
+  background: var(--bg2); border: 1px solid var(--gold);
+  padding: 24px; width: 100%; max-width: 480px;
+  animation: fadeIn .4s ease;
+  flex-shrink: 0;
+}
+.setup-title { font-family: 'Bebas Neue', sans-serif; font-size: 32px; color: var(--gold); letter-spacing: 2px; margin-bottom: 6px; }
+.setup-sub { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: 1px; margin-bottom: 24px; }
+.setup-section { margin-bottom: 20px; }
+.setup-section-title { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--gold); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+.field { margin-bottom: 12px; }
+.field label { display: block; font-size: 10px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 5px; font-family: 'IBM Plex Mono', monospace; }
+.field input, .field textarea, .field select {
+  width: 100%; background: var(--bg3); border: 1px solid #2a2a2a; color: var(--text);
+  padding: 9px 12px; font-family: 'IBM Plex Sans Arabic', sans-serif; font-size: 13px; outline: none; transition: border-color .2s;
+}
+.field input:focus, .field textarea:focus { border-color: var(--gold); }
+.field textarea { resize: vertical; min-height: 70px; }
+.field input[type="password"] { font-family: monospace; letter-spacing: 2px; }
+.hint { font-family: 'IBM Plex Mono', monospace; font-size: 9px; color: #444; margin-top: 4px; }
+.hint a { color: var(--blue); text-decoration: none; }
+
+/* ── BUTTONS ── */
+.btn { display: inline-flex; align-items: center; gap: 7px; padding: 10px 18px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; border: none; transition: all .2s; }
+.btn-primary { background: var(--gold); color: #0d0d0d; font-weight: 700; }
+.btn-primary:hover { background: var(--gold2); }
+.btn-primary:disabled { background: #222; color: #444; cursor: not-allowed; }
+.btn-ghost { background: transparent; color: var(--gold); border: 1px solid var(--gold); }
+.btn-ghost:hover { background: var(--gold); color: #0d0d0d; }
+.btn-danger { background: transparent; color: var(--red); border: 1px solid var(--red); }
+.btn-danger:hover { background: var(--red); color: #fff; }
+.btn-sm { padding: 6px 12px; font-size: 9px; }
+.btn-full { width: 100%; justify-content: center; }
+
+/* ── MAIN LAYOUT ── */
+#main-screen { position: relative; z-index: 10; display: none; }
+.main-grid { display: grid; grid-template-columns: 320px 1fr; gap: 20px; padding: 20px 28px; }
+@media (max-width: 768px) { .main-grid { grid-template-columns: 1fr; } }
+
+/* ── PANELS ── */
+.panel { background: var(--bg2); border: 1px solid var(--border); padding: 20px; }
+.panel-title { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+
+/* ── STATS ── */
+.stats { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-bottom: 18px; }
+@media (max-width: 600px) { .stats { grid-template-columns: repeat(3, 1fr); } }
+.stat { background: var(--bg2); border: 1px solid var(--border); padding: 12px; }
+.stat-num { font-family: 'Bebas Neue', sans-serif; font-size: 32px; line-height: 1; color: var(--gold); }
+.stat-lbl { font-family: 'IBM Plex Mono', monospace; font-size: 9px; color: #444; letter-spacing: 2px; text-transform: uppercase; margin-top: 2px; }
+
+/* ── PROGRESS ── */
+.progress-wrap { margin-bottom: 16px; }
+.progress-bar { height: 2px; background: var(--border); overflow: hidden; margin-bottom: 4px; }
+.progress-fill { height: 100%; background: var(--gold); transition: width .5s; }
+.progress-info { display: flex; justify-content: space-between; font-family: 'IBM Plex Mono', monospace; font-size: 9px; color: #444; }
+
+/* ── TABS ── */
+.tabs { display: flex; margin-bottom: 16px; border-bottom: 1px solid var(--border); }
+.tab { padding: 8px 14px; font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; color: #444; border-bottom: 2px solid transparent; transition: all .2s; background: none; border-left: none; border-right: none; border-top: none; }
+.tab.active { color: var(--gold); border-bottom-color: var(--gold); }
+.tab:hover { color: var(--text); }
+
+/* ── TABLE ── */
+.tbl { width: 100%; border-collapse: collapse; }
+.tbl th { font-family: 'IBM Plex Mono', monospace; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: #444; padding: 8px 10px; text-align: right; border-bottom: 1px solid #181818; }
+.tbl td { padding: 9px 10px; font-size: 12px; border-bottom: 1px solid #141414; vertical-align: middle; }
+.tbl tr:hover td { background: #131313; }
+
+/* ── STATUS BADGES ── */
+.sb { display: inline-flex; align-items: center; gap: 4px; font-family: 'IBM Plex Mono', monospace; font-size: 9px; padding: 3px 8px; letter-spacing: 1px; white-space: nowrap; }
+.sb-dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+.s-pending { background: #1a1400; color: var(--gold); border: 1px solid #2a2200; }
+.s-sent { background: #001a0d; color: var(--green); border: 1px solid #1a3a22; }
+.s-replied { background: #001a33; color: var(--blue); border: 1px solid #1a2a40; }
+.s-rejected { background: #1a0000; color: var(--red); border: 1px solid #3a1515; }
+.s-sending { background: #0d0d1a; color: #9c6fff; border: 1px solid #2a1a40; animation: pulse 1s infinite; }
+.s-reminder { background: #1a0d00; color: var(--orange); border: 1px solid #332200; }
+@keyframes pulse { 0%,100%{opacity:1}50%{opacity:.4} }
+
+/* ── LOG ── */
+.logbox { background: #060606; border: 1px solid #141414; padding: 10px; height: 100px; overflow-y: auto; font-family: 'IBM Plex Mono', monospace; font-size: 10px; line-height: 1.9; margin-bottom: 14px; }
+.log-ok { color: var(--green); }
+.log-err { color: var(--red); }
+.log-info { color: var(--gold); }
+.log-warn { color: var(--orange); }
+
+/* ── ADD ROW ── */
+.add-row { display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 8px; margin-bottom: 12px; align-items: end; }
+@media (max-width: 600px) { .add-row { grid-template-columns: 1fr 1fr; } }
+
+/* ── INFO BOX ── */
+.info-box { background: #000d1a; border: 1px solid #1a2a40; padding: 12px 14px; margin-bottom: 14px; font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--blue); line-height: 2; }
+.info-box span { color: var(--gold); }
+
+/* ── TOAST ── */
+.toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 1000; background: var(--bg2); border: 1px solid var(--gold); padding: 10px 18px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; animation: slideUp .3s ease; white-space: nowrap; }
+.toast.error { border-color: var(--red); color: var(--red); }
+.toast.success { border-color: var(--green); color: var(--green); }
+.toast.info { border-color: var(--blue); color: var(--blue); }
+@keyframes slideUp { from{transform:translateX(-50%) translateY(20px);opacity:0}to{transform:translateX(-50%) translateY(0);opacity:1} }
+
+/* ── MODAL ── */
+.overlay { position: fixed; inset: 0; background: rgba(0,0,0,.9); z-index: 200; display: none; align-items: center; justify-content: center; padding: 16px; }
+.overlay.show { display: flex; }
+.modal { background: var(--bg2); border: 1px solid var(--gold); width: 100%; max-width: 640px; max-height: 90vh; display: flex; flex-direction: column; animation: fadeIn .2s ease; }
+.modal-header { padding: 14px 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: flex-start; }
+.modal-title { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); }
+.modal-to { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--muted); margin-top: 3px; }
+.modal-body { padding: 18px; overflow-y: auto; flex: 1; }
+.email-subject { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--gold); background: var(--bg3); border: 1px solid #222; padding: 9px 13px; margin-bottom: 12px; }
+.email-body { font-family: 'IBM Plex Sans Arabic', sans-serif; font-size: 13px; line-height: 1.9; color: #ccc; background: var(--bg3); border: 1px solid var(--border); padding: 16px; white-space: pre-wrap; min-height: 160px; }
+.email-edit { font-family: 'IBM Plex Sans Arabic', sans-serif; font-size: 13px; line-height: 1.9; color: var(--text); background: var(--bg3); border: 1px solid var(--gold); padding: 16px; width: 100%; min-height: 160px; resize: vertical; outline: none; }
+.subject-edit { width: 100%; background: var(--bg3); border: 1px solid var(--gold); color: var(--gold); padding: 9px 13px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; margin-bottom: 12px; outline: none; }
+.modal-footer { padding: 12px 20px; border-top: 1px solid var(--border); display: flex; gap: 8px; justify-content: flex-end; align-items: center; flex-wrap: wrap; }
+.modal-counter { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: #444; margin-left: auto; }
+.generating { display: flex; align-items: center; gap: 10px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--gold); padding: 40px; justify-content: center; }
+.spinner { width: 16px; height: 16px; border: 2px solid #333; border-top-color: var(--gold); border-radius: 50%; animation: spin .7s linear infinite; flex-shrink: 0; }
+@keyframes spin { to{transform:rotate(360deg)} }
+.edit-btn { font-family: 'IBM Plex Mono', monospace; font-size: 9px; color: var(--muted); cursor: pointer; border: 1px solid #222; background: transparent; padding: 4px 10px; transition: all .2s; }
+.edit-btn:hover { color: var(--gold); border-color: var(--gold); }
+
+/* ── WARMUP BAR ── */
+.warmup { display: flex; align-items: center; gap: 10px; padding: 8px 28px; background: var(--bg3); border-bottom: 1px solid #141414; position: relative; z-index: 10; flex-wrap: wrap; font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--muted); }
+.warmup-track { flex: 1; max-width: 150px; height: 3px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.warmup-fill { height: 100%; background: var(--gold); transition: width .5s; }
+
+/* ── REMINDER TAG ── */
+.rtag { font-family: 'IBM Plex Mono', monospace; font-size: 9px; color: var(--orange); background: #1a1000; border: 1px solid #332200; padding: 2px 6px; display: inline-block; margin-top: 2px; }
+
+/* ── FILE UPLOAD ── */
+.uzone { border: 1px dashed #2a2a2a; padding: 12px; text-align: center; cursor: pointer; transition: all .2s; background: var(--bg3); }
+.uzone:hover { border-color: var(--gold); }
+.uzone.has { border-color: var(--green); border-style: solid; }
+input[type=file] { display: none; }
+
+/* ── SETTINGS LINK ── */
+.settings-link { font-family: 'IBM Plex Mono', monospace; font-size: 9px; color: var(--muted); cursor: pointer; text-decoration: underline; margin-top: 8px; display: inline-block; }
+.settings-link:hover { color: var(--gold); }
+
+@keyframes fadeIn { from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)} }
+</style>
+</head>
+<body>
+
+<!-- ══ SETUP SCREEN ══ -->
+<div id="setup-screen">
+  <div class="setup-box">
+    <div class="setup-title">JOBMAILER.DE</div>
+    <div class="setup-sub">إعداد أولي — مرة واحدة فقط</div>
+
+    <div class="setup-section">
+      <div class="setup-section-title">👤 بياناتك الشخصية</div>
+      <div class="field"><label>الاسم الكامل *</label><input id="cfg-name" placeholder="Mohamed El Amrani"></div>
+      <div class="field"><label>رقم الهاتف</label><input id="cfg-phone" placeholder="+212 6..."></div>
+      <div class="field"><label>مدينة الإقامة</label><input id="cfg-city" placeholder="Casablanca"></div>
+      <div class="field"><label>نبذة قصيرة (اختياري)</label><textarea id="cfg-intro" placeholder="خبرة في صيانة السيارات، مستوى ألمانية B2..."></textarea></div>
+    </div>
+
+    <div class="setup-section">
+      <div class="setup-section-title">📧 إعدادات Gmail</div>
+      <div class="field">
+        <label>Gmail الخاص بك *</label>
+        <input id="cfg-gmail" type="email" placeholder="example@gmail.com">
+      </div>
+      <div class="field">
+        <label>Gmail App Password *</label>
+        <input id="cfg-pass" type="password" placeholder="xxxx xxxx xxxx xxxx">
+        <div class="hint">احصل عليه من: <a href="https://myaccount.google.com/apppasswords" target="_blank">myaccount.google.com/apppasswords</a></div>
+      </div>
+    </div>
+
+    <div class="setup-section">
+      <div class="setup-section-title">🤖 Anthropic API</div>
+      <div class="field">
+        <label>API Key *</label>
+        <input id="cfg-api" type="password" placeholder="sk-ant-api...">
+        <div class="hint">احصل عليه من: <a href="https://console.anthropic.com/settings/keys" target="_blank">console.anthropic.com</a></div>
+      </div>
+    </div>
+
+    <div class="setup-section">
+      <div class="setup-section-title">📎 ملف CV</div>
+      <div class="field">
+        <label for="cfg-cv">رفع CV — PDF</label>
+        <label for="cfg-cv-input">
+          <div class="uzone" id="cv-zone">
+            <div style="font-size:20px;margin-bottom:4px">⬆️</div>
+            <div style="font-size:11px;color:var(--muted)">اضغط لرفع Lebenslauf.pdf</div>
+          </div>
+        </label>
+        <input id="cfg-cv-input" type="file" accept=".pdf">
+      </div>
+    </div>
+
+    <button class="btn btn-primary btn-full" onclick="saveConfig()">💾 حفظ والبدء</button>
+  </div>
+</div>
+
+<!-- ══ MAIN SCREEN ══ -->
+<div id="main-screen">
+  <div class="header">
+    <div><div class="logo">JOBMAILER.DE</div></div>
+    <div class="header-info">
+      <div class="header-sub">إرسال Ausbildung · KFZ-Mechaniker · 🇲🇦 → 🇩🇪</div>
+      <span class="badge">AUSBILDUNG</span>
+      <span class="badge">KFZ-MECHANIKER</span>
+      <span class="badge b" id="berlin-badge">برلين --:--</span>
+      <span class="settings-link" onclick="showSettings()">⚙️ الإعدادات</span>
+    </div>
+  </div>
+
+  <div class="warmup">
+    <span>الأسبوع <span id="week-num">1</span>:</span>
+    <div class="warmup-track"><div class="warmup-fill" id="warmup-fill" style="width:0%"></div></div>
+    <span id="warmup-label" style="color:var(--gold)">0/20 اليوم</span>
+    <span style="margin-right:auto;color:#333" id="warmup-hint">أسبوع 1: 20/يوم</span>
+  </div>
+
+  <div class="main-grid">
+    <!-- LEFT PANEL -->
+    <div>
+      <div class="panel">
+        <div class="panel-title">إعدادات الإرسال</div>
+
+        <div class="field">
+          <label>الحد اليومي</label>
+          <select id="daily-limit" style="width:100%;background:var(--bg3);border:1px solid #222;color:var(--text);padding:8px;font-family:'IBM Plex Mono',monospace;font-size:12px;outline:none;">
+            <option value="10">10 إيميل/يوم (آمن جداً)</option>
+            <option value="20" selected>20 إيميل/يوم (أسبوع 1)</option>
+            <option value="50">50 إيميل/يوم (أسبوع 2+)</option>
+            <option value="100">100 إيميل/يوم (أسبوع 3+)</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>تذكير بعد (أيام)</label>
+          <input id="reminder-days" type="number" value="15" min="7" max="30">
+        </div>
+
+        <div class="info-box">
+          ✅ يرسل مباشرة من Gmail مع <span>CV مرفق</span><br>
+          🤖 يكتب كل إيميل بـ <span>AI بالألمانية</span><br>
+          🔔 تذكير تلقائي بعد <span id="reminder-info">15</span> يوم<br>
+          🛡️ حماية من <span>Spam</span> بتأخير ذكي
+        </div>
+
+        <button class="btn btn-primary btn-full" id="send-btn" onclick="startSending()">
+          🚀 بدء الإرسال
+        </button>
+        <button class="btn btn-danger btn-full" id="stop-btn" onclick="stopSending()" style="display:none;margin-top:8px">
+          ⛔ إيقاف
+        </button>
+        <button class="btn btn-ghost btn-full" id="reminder-btn" onclick="sendReminders()" style="margin-top:8px;display:none">
+          🔔 إرسال التذكيرات (<span id="reminder-count">0</span>)
+        </button>
+        <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border)">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">Apps Script Proxy</div>
+          <div id="proxy-status" style="font-family:'IBM Plex Mono',monospace;font-size:10px;margin-bottom:8px"></div>
+          <button class="btn btn-ghost btn-full btn-sm" onclick="setupProxy()">🔗 إدخال رابط Proxy</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div>
+      <div class="stats">
+        <div class="stat"><div class="stat-num" id="s-total">0</div><div class="stat-lbl">إجمالي</div></div>
+        <div class="stat"><div class="stat-num" id="s-sent" style="color:var(--green)">0</div><div class="stat-lbl">أُرسل</div></div>
+        <div class="stat"><div class="stat-num" id="s-replied" style="color:var(--blue)">0</div><div class="stat-lbl">ردوا</div></div>
+        <div class="stat"><div class="stat-num" id="s-rejected" style="color:var(--red)">0</div><div class="stat-lbl">رُفض</div></div>
+        <div class="stat"><div class="stat-num" id="s-reminder" style="color:var(--orange)">0</div><div class="stat-lbl">تذكير</div></div>
+      </div>
+
+      <div class="progress-wrap" id="progress-wrap" style="display:none">
+        <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+        <div class="progress-info"><span id="progress-label">جاري الإرسال...</span><span id="progress-pct">0%</span></div>
+      </div>
+
+      <div class="tabs">
+        <button class="tab active" onclick="showTab('companies',this)">➕ الشركات</button>
+        <button class="tab" onclick="showTab('tracker',this)">📊 المتابعة</button>
+      </div>
+
+      <!-- COMPANIES TAB -->
+      <div id="tab-companies" class="panel">
+        <div class="panel-title">إضافة شركات Ausbildung</div>
+        <div class="add-row">
+          <div class="field" style="margin:0"><label>اسم الشركة *</label><input id="co-name" placeholder="KFZ GmbH Berlin"></div>
+          <div class="field" style="margin:0"><label>البريد *</label><input id="co-email" placeholder="info@firma.de"></div>
+          <div class="field" style="margin:0"><label>المدير</label><input id="co-ceo" placeholder="Herr Müller"></div>
+          <button class="btn btn-ghost btn-sm" onclick="addCompany()" style="margin-top:18px">+ إضافة</button>
+        </div>
+        <div style="display:flex;gap:8px;margin-bottom:12px;align-items:center;flex-wrap:wrap">
+          <label for="csv-input" style="cursor:pointer"><div class="btn btn-ghost btn-sm">📥 استيراد CSV</div></label>
+          <input id="csv-input" type="file" accept=".csv" onchange="importCSV(this)">
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:#2a2a2a">تنسيق: name,email,ceo,city</span>
+          <button class="btn btn-sm" style="background:transparent;color:var(--red);border:1px solid #2a1515;margin-right:auto" onclick="clearAll()">🗑 حذف الكل</button>
+        </div>
+        <div id="companies-table-wrap">
+          <div style="text-align:center;padding:40px;color:#222;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:2px">أضف شركات أو استورد CSV</div>
+        </div>
+      </div>
+
+      <!-- TRACKER TAB -->
+      <div id="tab-tracker" class="panel" style="display:none">
+        <div class="panel-title">سجل الإرسال والمتابعة</div>
+        <div class="logbox" id="logbox">
+          <span style="color:#1e1e1e">// سجل الأنشطة سيظهر هنا...</span>
+        </div>
+        <div id="tracker-table-wrap">
+          <div style="text-align:center;padding:40px;color:#222;font-family:'IBM Plex Mono',monospace;font-size:11px">لا توجد شركات بعد</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PREVIEW MODAL ══ -->
+<div class="overlay" id="preview-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title">👁️ معاينة الإيميل</div>
+        <div class="modal-to" id="preview-to">—</div>
+      </div>
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#444" id="preview-counter">1/1</span>
+    </div>
+    <div class="modal-body" id="preview-body">
+      <div class="generating"><div class="spinner"></div>جاري كتابة الإيميل...</div>
+    </div>
+    <div class="modal-footer">
+      <span class="modal-counter" id="preview-footer-counter"></span>
+      <button class="edit-btn" id="edit-toggle-btn" onclick="toggleEdit()">✏️ تعديل</button>
+      <button class="btn btn-sm" style="background:transparent;color:#555;border:1px solid #222" onclick="previewDecide('stop')">⛔ إيقاف</button>
+      <button class="btn btn-ghost btn-sm" onclick="previewDecide('skip')">⏭️ تخطي</button>
+      <button class="btn btn-primary btn-sm" onclick="previewDecide('send')">📨 إرسال</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════
+let config = {};
+let companies = [];
+let sending = false;
+let cancelFlag = false;
+let cvBase64 = null;
+let cvFileName = 'Lebenslauf.pdf';
+let previewResolve = null;
+let editMode = false;
+let currentSubject = '';
+let currentBody = '';
+
+const WARMUP = {1:20, 2:50, 3:100};
+
+// ══════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════
+window.onload = () => {
+  const saved = localStorage.getItem('jm_config');
+  if (saved) {
+    config = JSON.parse(saved);
+    showMain();
+  }
+
+  document.getElementById('cfg-cv-input').onchange = e => {
+    const f = e.target.files[0];
+    if (!f) return;
+    cvFileName = f.name;
+    document.getElementById('cv-zone').innerHTML = `<div style="font-size:18px;margin-bottom:4px">📄</div><div style="font-size:11px;color:var(--green)">${f.name}</div>`;
+    document.getElementById('cv-zone').classList.add('has');
+    const r = new FileReader();
+    r.onload = ev => { cvBase64 = ev.target.result.split(',')[1]; };
+    r.readAsDataURL(f);
+  };
+
+  document.getElementById('reminder-days').oninput = e => {
+    document.getElementById('reminder-info').textContent = e.target.value;
+  };
+
+  updateBerlinTime();
+  setInterval(updateBerlinTime, 30000);
+  setInterval(checkReminders, 60000 * 30); // كل 30 دقيقة
+};
+
+function updateBerlinTime() {
+  const berlin = new Date().toLocaleString('en-US', { timeZone: 'Europe/Berlin' });
+  const b = new Date(berlin);
+  const h = b.getHours(), d = b.getDay();
+  const biz = d >= 1 && d <= 5 && h >= 8 && h < 17;
+  const t = b.toLocaleTimeString('de-DE', { hour:'2-digit', minute:'2-digit' });
+  const badge = document.getElementById('berlin-badge');
+  badge.textContent = `برلين ${t} ${biz ? '🟢' : '🔴'}`;
+  badge.className = `badge ${biz ? 'g' : 'r'}`;
+}
+
+// ══════════════════════════════════════════
+// CONFIG
+// ══════════════════════════════════════════
+function saveConfig() {
+  const name = document.getElementById('cfg-name').value.trim();
+  const gmail = document.getElementById('cfg-gmail').value.trim();
+  const pass = document.getElementById('cfg-pass').value.trim();
+  const api = document.getElementById('cfg-api').value.trim();
+
+  if (!name || !gmail || !pass || !api) return toast('أكمل الحقول المطلوبة *', 'error');
+
+  config = {
+    name, gmail, pass, api,
+    phone: document.getElementById('cfg-phone').value.trim(),
+    city: document.getElementById('cfg-city').value.trim(),
+    intro: document.getElementById('cfg-intro').value.trim(),
+    startDate: localStorage.getItem('jm_start') || new Date().toISOString(),
+  };
+
+  localStorage.setItem('jm_start', config.startDate);
+  localStorage.setItem('jm_config', JSON.stringify(config));
+  if (cvBase64) { localStorage.setItem('jm_cv', cvBase64); localStorage.setItem('jm_cvname', cvFileName); }
+
+  showMain();
+  toast('✅ تم الحفظ!', 'success');
+}
+
+function showSettings() {
+  document.getElementById('main-screen').style.display = 'none';
+  document.getElementById('setup-screen').style.display = 'flex';
+  document.getElementById('cfg-name').value = config.name || '';
+  document.getElementById('cfg-gmail').value = config.gmail || '';
+  document.getElementById('cfg-phone').value = config.phone || '';
+  document.getElementById('cfg-city').value = config.city || '';
+  document.getElementById('cfg-intro').value = config.intro || '';
+}
+
+function showMain() {
+  document.getElementById('setup-screen').style.display = 'none';
+  document.getElementById('main-screen').style.display = 'block';
+  if (localStorage.getItem('jm_cv')) {
+    cvBase64 = localStorage.getItem('jm_cv');
+    cvFileName = localStorage.getItem('jm_cvname') || 'Lebenslauf.pdf';
+  }
+  // Load saved companies
+  const saved = localStorage.getItem('jm_companies');
+  if (saved) { companies = JSON.parse(saved); renderTables(); updateStats(); }
+  updateWarmup();
+  updateProxyStatus();
+}
+
+// ══════════════════════════════════════════
+// WARMUP
+// ══════════════════════════════════════════
+function getWeek() {
+  const start = config.startDate || new Date().toISOString();
+  return Math.min(3, Math.floor((Date.now() - new Date(start).getTime()) / (7*86400000)) + 1);
+}
+
+function getTodaySent() {
+  try {
+    if (localStorage.getItem('jm_day') === new Date().toDateString())
+      return parseInt(localStorage.getItem('jm_sent') || '0');
+  } catch {}
+  return 0;
+}
+
+function incTodaySent() {
+  const n = getTodaySent() + 1;
+  localStorage.setItem('jm_sent', n);
+  localStorage.setItem('jm_day', new Date().toDateString());
+  updateWarmup();
+}
+
+function updateWarmup() {
+  const week = getWeek();
+  const limit = parseInt(document.getElementById('daily-limit').value);
+  const sent = getTodaySent();
+  const rem = Math.max(0, limit - sent);
+  document.getElementById('week-num').textContent = week;
+  document.getElementById('warmup-fill').style.width = `${Math.min(100,(sent/limit)*100)}%`;
+  document.getElementById('warmup-label').textContent = `${sent}/${limit} اليوم (${rem} متبقي)`;
+  document.getElementById('warmup-label').style.color = rem > 0 ? 'var(--gold)' : 'var(--red)';
+  document.getElementById('warmup-hint').textContent = `أسبوع ${week}: ${limit}/يوم`;
+}
+
+// ══════════════════════════════════════════
+// COMPANIES
+// ══════════════════════════════════════════
+function saveCompanies() {
+  localStorage.setItem('jm_companies', JSON.stringify(companies));
+}
+
+function addCompany() {
+  const name = document.getElementById('co-name').value.trim();
+  const email = document.getElementById('co-email').value.trim();
+  if (!name || !email) return toast('أدخل اسم الشركة والإيميل', 'error');
+  companies.push({
+    id: Date.now(),
+    name, email,
+    ceo: document.getElementById('co-ceo').value.trim(),
+    city: '',
+    status: 'pending',
+    sentAt: null,
+    reminderSent: false,
+    repliedAt: null,
+  });
+  document.getElementById('co-name').value = '';
+  document.getElementById('co-email').value = '';
+  document.getElementById('co-ceo').value = '';
+  saveCompanies();
+  renderTables();
+  updateStats();
+}
+
+function importCSV(input) {
+  const f = input.files[0]; if (!f) return;
+  const r = new FileReader();
+  r.onload = ev => {
+    const rows = ev.target.result.split('\n').slice(1).filter(Boolean).map((line, i) => {
+      const [name, email, ceo, city] = line.split(',').map(s => s?.trim().replace(/"/g,'') || '');
+      return { id: Date.now()+i, name, email, ceo:ceo||'', city:city||'', status:'pending', sentAt:null, reminderSent:false, repliedAt:null };
+    }).filter(r => r.name && r.email);
+    companies = [...companies, ...rows];
+    saveCompanies();
+    renderTables();
+    updateStats();
+    toast(`✅ استُورد ${rows.length} شركة`, 'success');
+  };
+  r.readAsText(f);
+}
+
+function clearAll() {
+  if (!confirm('حذف كل الشركات؟')) return;
+  companies = [];
+  saveCompanies();
+  renderTables();
+  updateStats();
+}
+
+function deleteCompany(id) {
+  companies = companies.filter(c => c.id !== id);
+  saveCompanies();
+  renderTables();
+  updateStats();
+}
+
+function updateStatus(id, status) {
+  const co = companies.find(c => c.id === id);
+  if (co) {
+    co.status = status;
+    if (status === 'replied') co.repliedAt = new Date().toISOString();
+    saveCompanies();
+    updateStats();
+    renderTables();
+  }
+}
+
+// ══════════════════════════════════════════
+// RENDER
+// ══════════════════════════════════════════
+const SC = { pending:'s-pending', sent:'s-sent', replied:'s-replied', rejected:'s-rejected', sending:'s-sending' };
+const ST = { pending:'معلق', sent:'أُرسل ✓', replied:'رد ✓', rejected:'رُفض', sending:'جاري...' };
+
+function renderTables() {
+  renderCompaniesTable();
+  renderTrackerTable();
+  checkReminders();
+}
+
+function renderCompaniesTable() {
+  const wrap = document.getElementById('companies-table-wrap');
+  if (!companies.length) {
+    wrap.innerHTML = '<div style="text-align:center;padding:40px;color:#222;font-family:\'IBM Plex Mono\',monospace;font-size:11px;letter-spacing:2px">أضف شركات أو استورد CSV</div>';
+    return;
+  }
+  wrap.innerHTML = `<table class="tbl">
+    <thead><tr><th>الشركة</th><th>البريد</th><th>المدير</th><th>الحالة</th><th></th></tr></thead>
+    <tbody>${companies.map(co => `
+      <tr>
+        <td style="font-weight:600">${co.name}</td>
+        <td style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted)">${co.email}</td>
+        <td style="color:#444;font-size:11px">${co.ceo||'—'}</td>
+        <td><span class="sb ${SC[co.status]||'s-pending'}"><span class="sb-dot"></span>${ST[co.status]||'معلق'}</span></td>
+        <td><button class="btn btn-sm" style="background:transparent;color:#333;border:1px solid #1a1a1a;padding:4px 8px" onclick="deleteCompany(${co.id})">✕</button></td>
+      </tr>`).join('')}
+    </tbody></table>`;
+}
+
+function renderTrackerTable() {
+  const wrap = document.getElementById('tracker-table-wrap');
+  if (!companies.length) {
+    wrap.innerHTML = '<div style="text-align:center;padding:40px;color:#222;font-family:\'IBM Plex Mono\',monospace;font-size:11px">لا توجد شركات بعد</div>';
+    return;
+  }
+  const days = d => d ? Math.floor((Date.now()-new Date(d).getTime())/86400000) : null;
+  wrap.innerHTML = `<table class="tbl">
+    <thead><tr><th>الشركة</th><th>تاريخ الإرسال</th><th>الأيام</th><th>الحالة</th><th>تحديث</th></tr></thead>
+    <tbody>${companies.map(co => `
+      <tr>
+        <td>
+          <div style="font-weight:600">${co.name}</div>
+          ${needsReminder(co) && !co.reminderSent ? '<div class="rtag">⏰ تذكير مطلوب</div>' : ''}
+          ${co.reminderSent ? '<div class="rtag" style="color:var(--green);background:#001a0d;border-color:#1a3a22">✅ تذكير أُرسل</div>' : ''}
+        </td>
+        <td style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#444">${co.sentAt ? new Date(co.sentAt).toLocaleDateString('de-DE') : '—'}</td>
+        <td style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#444">${days(co.sentAt) !== null ? days(co.sentAt)+'d' : '—'}</td>
+        <td><span class="sb ${SC[co.status]||'s-pending'}"><span class="sb-dot"></span>${ST[co.status]||'معلق'}</span></td>
+        <td>
+          <select onchange="updateStatus(${co.id},this.value)" style="background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:3px 6px;font-family:'IBM Plex Mono',monospace;font-size:10px;cursor:pointer">
+            <option value="pending" ${co.status==='pending'?'selected':''}>معلق</option>
+            <option value="sent" ${co.status==='sent'?'selected':''}>أُرسل ✓</option>
+            <option value="replied" ${co.status==='replied'?'selected':''}>رد ✓</option>
+            <option value="rejected" ${co.status==='rejected'?'selected':''}>رُفض</option>
+          </select>
+        </td>
+      </tr>`).join('')}
+    </tbody></table>`;
+}
+
+function updateStats() {
+  document.getElementById('s-total').textContent = companies.length;
+  document.getElementById('s-sent').textContent = companies.filter(c=>['sent','replied'].includes(c.status)).length;
+  document.getElementById('s-replied').textContent = companies.filter(c=>c.status==='replied').length;
+  document.getElementById('s-rejected').textContent = companies.filter(c=>c.status==='rejected').length;
+  const remCount = companies.filter(c=>needsReminder(c)&&!c.reminderSent).length;
+  document.getElementById('s-reminder').textContent = remCount;
+  document.getElementById('reminder-count').textContent = remCount;
+  document.getElementById('reminder-btn').style.display = remCount > 0 ? 'flex' : 'none';
+  updateWarmup();
+}
+
+function needsReminder(co) {
+  if (co.status !== 'sent') return false;
+  const days = parseInt(document.getElementById('reminder-days').value) || 15;
+  return co.sentAt && Math.floor((Date.now()-new Date(co.sentAt).getTime())/86400000) >= days;
+}
+
+// ══════════════════════════════════════════
+// TABS & LOG
+// ══════════════════════════════════════════
+function showTab(name, btn) {
+  document.getElementById('tab-companies').style.display = name==='companies' ? 'block' : 'none';
+  document.getElementById('tab-tracker').style.display = name==='tracker' ? 'block' : 'none';
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function addLog(msg, type='info') {
+  const box = document.getElementById('logbox');
+  const d = document.createElement('div');
+  d.className = `log-${type}`;
+  d.innerHTML = `<span style="color:#222">[${new Date().toLocaleTimeString()}]</span> ${msg}`;
+  if (box.querySelector('span[style]')) box.innerHTML = '';
+  box.appendChild(d);
+  box.scrollTop = box.scrollHeight;
+}
+
+// ══════════════════════════════════════════
+// AI EMAIL GENERATION
+// ══════════════════════════════════════════
+async function generateEmail(co) {
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'x-api-key': config.api, 'anthropic-version': '2023-06-01' },
+    body: JSON.stringify({
+      model: 'claude-opus-4-5',
+      max_tokens: 800,
+      messages: [{
+        role: 'user',
+        content: `Schreibe eine professionelle, überzeugende Bewerbungs-E-Mail auf Deutsch für eine KFZ-Mechatroniker Ausbildungsstelle.
+
+Bewerber: ${config.name}${config.phone?` | Tel: ${config.phone}`:''}${config.city?` | Wohnort: ${config.city}`:''}
+Profil: ${config.intro||'Motivierter Bewerber mit Begeisterung für Fahrzeugtechnik und handwerklichem Talent, Deutschniveau B2'}
+
+Firma: ${co.name}${co.ceo?` | Ansprechpartner: ${co.ceo}`:''}${co.city?` | Ort: ${co.city}`:''}
+
+Wichtig:
+- Erwähne "${co.name}" namentlich — zeige echtes Interesse
+- ${co.ceo?`Spreche "${co.ceo}" direkt an`:'Nutze: Sehr geehrte Damen und Herren,'}
+- Professionell, überzeugend, max 3 kurze Absätze
+- Konkrete Bitte um Vorstellungsgespräch am Ende
+- Erste Zeile: "Betreff: ..."
+
+Nur den E-Mail-Text, keine Erklärungen.`
+      }]
+    })
+  });
+  const d = await res.json();
+  if (d.error) throw new Error(d.error.message);
+  return d.content?.[0]?.text || '';
+}
+
+// ══════════════════════════════════════════
+// GMAIL SMTP SEND
+// ══════════════════════════════════════════
+async function sendEmail(to, subject, body, attachCV=true) {
+  // نبني الإيميل بصيغة MIME عبر Gmail API
+  // لأن SMTP مباشر لا يعمل من المتصفح، نستخدم backend بديل
+  // الحل: نستخدم EmailJS كـ relay مجاني
+  // أو نستخدم Brevo/Mailgun free tier
+  // هنا نستخدم طريقة App Script كـ proxy
+
+  // الطريقة الأبسط: نرسل عبر Apps Script deployed as web app
+  // لكن للتبسيط نستخدم mailto مع تتبع محلي
+  // الإرسال الحقيقي يتم عبر Google Apps Script
+
+  const emailData = {
+    to, subject, body,
+    from: config.gmail,
+    pass: config.pass,
+    name: config.name,
+    cvBase64: attachCV && cvBase64 ? cvBase64 : null,
+    cvName: cvFileName,
+  };
+
+  // نستخدم Apps Script Web App كـ SMTP proxy
+  const PROXY_URL = localStorage.getItem('jm_proxy');
+  if (!PROXY_URL) throw new Error('يجب إعداد Apps Script Proxy أولاً');
+
+  const res = await fetch(PROXY_URL, {
+    method: 'POST',
+    body: JSON.stringify(emailData),
+  });
+
+  const result = await res.json();
+  if (!result.success) throw new Error(result.error || 'فشل الإرسال');
+  return true;
+}
+
+// ══════════════════════════════════════════
+// PREVIEW MODAL
+// ══════════════════════════════════════════
+function showPreview(co, subject, body, index, total) {
+  return new Promise(resolve => {
+    previewResolve = resolve;
+    editMode = false;
+    currentSubject = subject;
+    currentBody = body;
+
+    document.getElementById('preview-to').textContent = `إلى: ${co.name} — ${co.email}`;
+    document.getElementById('preview-counter').textContent = `${index} / ${total}`;
+    document.getElementById('preview-footer-counter').textContent = `${index} من ${total}`;
+
+    document.getElementById('preview-body').innerHTML = `
+      <div class="email-subject" id="subject-display">Betreff: ${subject}</div>
+      <div class="email-body" id="body-display">${body}</div>`;
+
+    document.getElementById('edit-toggle-btn').textContent = '✏️ تعديل';
+    document.getElementById('preview-modal').classList.add('show');
+  });
+}
+
+function showGenerating() {
+  document.getElementById('preview-body').innerHTML = '<div class="generating"><div class="spinner"></div>جاري كتابة الإيميل بالذكاء الاصطناعي...</div>';
+  document.getElementById('preview-to').textContent = 'الرجاء الانتظار...';
+  document.getElementById('preview-modal').classList.add('show');
+}
+
+function toggleEdit() {
+  editMode = !editMode;
+  document.getElementById('edit-toggle-btn').textContent = editMode ? '👁️ عرض' : '✏️ تعديل';
+  if (editMode) {
+    document.getElementById('preview-body').innerHTML = `
+      <input class="subject-edit" id="subject-edit" value="${currentSubject.replace(/"/g,'&quot;')}">
+      <textarea class="email-edit" id="body-edit">${currentBody}</textarea>`;
+  } else {
+    currentSubject = document.getElementById('subject-edit')?.value || currentSubject;
+    currentBody = document.getElementById('body-edit')?.value || currentBody;
+    document.getElementById('preview-body').innerHTML = `
+      <div class="email-subject">Betreff: ${currentSubject}</div>
+      <div class="email-body">${currentBody}</div>`;
+  }
+}
+
+function previewDecide(action) {
+  if (editMode) {
+    currentSubject = document.getElementById('subject-edit')?.value || currentSubject;
+    currentBody = document.getElementById('body-edit')?.value || currentBody;
+  }
+  document.getElementById('preview-modal').classList.remove('show');
+  if (previewResolve) {
+    previewResolve({ action, subject: currentSubject, body: currentBody });
+    previewResolve = null;
+  }
+}
+
+// ══════════════════════════════════════════
+// MAIN SEND LOOP
+// ══════════════════════════════════════════
+async function startSending() {
+  const pending = companies.filter(c => c.status === 'pending');
+  if (!pending.length) return toast('لا توجد شركات معلقة', 'error');
+
+  const limit = parseInt(document.getElementById('daily-limit').value);
+  const todaySent = getTodaySent();
+  const remaining = Math.max(0, limit - todaySent);
+  if (remaining <= 0) return toast(`وصلت للحد اليومي (${limit}). حاول غداً!`, 'error');
+
+  const toSend = pending.slice(0, remaining);
+  cancelFlag = false;
+  sending = true;
+
+  document.getElementById('send-btn').style.display = 'none';
+  document.getElementById('stop-btn').style.display = 'flex';
+  document.getElementById('progress-wrap').style.display = 'block';
+  showTab('tracker', document.querySelectorAll('.tab')[1]);
+
+  addLog(`🚀 بدء الإرسال — ${toSend.length} شركة اليوم`, 'info');
+
+  for (let i = 0; i < toSend.length; i++) {
+    if (cancelFlag) { addLog('⛔ تم الإيقاف', 'warn'); break; }
+
+    const co = toSend[i];
+    const pct = Math.round((i / toSend.length) * 100);
+    document.getElementById('progress-fill').style.width = pct + '%';
+    document.getElementById('progress-pct').textContent = pct + '%';
+    document.getElementById('progress-label').textContent = `إرسال ${i+1}/${toSend.length}...`;
+
+    // Update company status
+    co.status = 'sending';
+    renderTables();
+
+    // Generate email
+    addLog(`✍️ كتابة إيميل لـ "${co.name}"...`, 'info');
+    showGenerating();
+
+    let emailText = '';
+    try {
+      emailText = await generateEmail(co);
+    } catch (err) {
+      addLog(`❌ فشل توليد الإيميل لـ ${co.name}: ${err.message}`, 'err');
+      co.status = 'pending';
+      document.getElementById('preview-modal').classList.remove('show');
+      renderTables();
+      continue;
+    }
+
+    // Parse subject and body
+    const lines = emailText.split('\n');
+    const subLine = lines.find(l => l.startsWith('Betreff:')) || '';
+    const subject = subLine.replace('Betreff:', '').trim() || `Bewerbung Ausbildung KFZ-Mechatroniker – ${config.name}`;
+    const body = lines.filter(l => !l.startsWith('Betreff:')).join('\n').trim();
+
+    // Show preview
+    const decision = await showPreview(co, subject, body, i+1, toSend.length);
+
+    if (decision.action === 'stop') {
+      co.status = 'pending';
+      cancelFlag = true;
+      addLog('⛔ تم الإيقاف من المعاينة', 'warn');
+      renderTables();
+      break;
+    }
+
+    if (decision.action === 'skip') {
+      co.status = 'pending';
+      addLog(`⏭️ تم تخطي ${co.name}`, 'warn');
+      renderTables();
+      continue;
+    }
+
+    // Send via proxy
+    addLog(`📨 إرسال إلى ${co.email}...`, 'info');
+    try {
+      await sendEmailViaProxy(co.email, decision.subject, decision.body);
+      co.status = 'sent';
+      co.sentAt = new Date().toISOString();
+      incTodaySent();
+      addLog(`✅ نجح الإرسال → ${co.name}`, 'ok');
+    } catch (err) {
+      co.status = 'pending';
+      addLog(`❌ فشل → ${co.name}: ${err.message}`, 'err');
+    }
+
+    saveCompanies();
+    renderTables();
+    updateStats();
+
+    // Anti-spam delay: 60-180 seconds between emails
+    if (i < toSend.length - 1 && !cancelFlag) {
+      const sec = 60 + Math.random() * 120;
+      addLog(`⏳ انتظار ${Math.round(sec)} ثانية (مضاد Spam)...`, 'info');
+      await sleep(sec * 1000);
+    }
+  }
+
+  document.getElementById('progress-fill').style.width = '100%';
+  document.getElementById('progress-pct').textContent = '100%';
+  document.getElementById('send-btn').style.display = 'flex';
+  document.getElementById('stop-btn').style.display = 'none';
+  sending = false;
+
+  const sentCount = companies.filter(c => ['sent','replied'].includes(c.status)).length;
+  addLog(`🎉 انتهى الإرسال — ${sentCount} إيميل مرسل`, 'ok');
+  toast('✅ انتهى الإرسال!', 'success');
+}
+
+function stopSending() {
+  cancelFlag = true;
+  document.getElementById('send-btn').style.display = 'flex';
+  document.getElementById('stop-btn').style.display = 'none';
+  sending = false;
+}
+
+// ══════════════════════════════════════════
+// SEND VIA APPS SCRIPT PROXY
+// ══════════════════════════════════════════
+async function sendEmailViaProxy(to, subject, body) {
+  const proxyUrl = localStorage.getItem('jm_proxy');
+
+  if (!proxyUrl) {
+    // إذا لم يكن هناك proxy، نعرض رسالة الإعداد
+    throw new Error('يجب إعداد Apps Script Proxy — راجع التعليمات');
+  }
+
+  const payload = {
+    to, subject, body,
+    fromEmail: config.gmail,
+    fromName: config.name,
+    appPassword: config.pass,
+    cvBase64: cvBase64 || null,
+    cvName: cvFileName,
+  };
+
+  const res = await fetch(proxyUrl, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  });
+
+  const result = await res.json();
+  if (!result.success) throw new Error(result.error || 'فشل الإرسال');
+  return true;
+}
+
+// ══════════════════════════════════════════
+// REMINDERS
+// ══════════════════════════════════════════
+function checkReminders() {
+  const count = companies.filter(c => needsReminder(c) && !c.reminderSent).length;
+  document.getElementById('s-reminder').textContent = count;
+  document.getElementById('reminder-count').textContent = count;
+  document.getElementById('reminder-btn').style.display = count > 0 ? 'flex' : 'none';
+}
+
+async function sendReminders() {
+  const toRemind = companies.filter(c => needsReminder(c) && !c.reminderSent);
+  if (!toRemind.length) return toast('لا يوجد من يحتاج تذكير', 'info');
+
+  addLog(`🔔 إرسال ${toRemind.length} تذكير...`, 'info');
+  showTab('tracker', document.querySelectorAll('.tab')[1]);
+
+  for (const co of toRemind) {
+    if (cancelFlag) break;
+    try {
+      const greeting = co.ceo ? `Sehr geehrte${co.ceo.includes('Frau')?'':'r'} ${co.ceo},` : 'Sehr geehrte Damen und Herren,';
+      const subject = `Nachfrage: Bewerbung Ausbildung KFZ-Mechatroniker – ${config.name}`;
+      const body = `${greeting}
+
+vor ${Math.floor((Date.now()-new Date(co.sentAt).getTime())/86400000)} Tagen habe ich mich bei ${co.name} um eine Ausbildungsstelle als KFZ-Mechatroniker beworben und noch keine Rückmeldung erhalten.
+
+Ich bin weiterhin sehr interessiert und möchte höflich nachfragen, ob meine Bewerbung eingegangen ist.
+
+Mit freundlichen Grüßen,
+${config.name}
+Tel: ${config.phone}
+E-Mail: ${config.gmail}`;
+
+      await sendEmailViaProxy(co.email, subject, body);
+      co.reminderSent = true;
+      addLog(`🔔 تذكير أُرسل → ${co.name}`, 'ok');
+      await sleep(30000 + Math.random() * 60000);
+    } catch (err) {
+      addLog(`❌ فشل تذكير → ${co.name}: ${err.message}`, 'err');
+    }
+  }
+
+  saveCompanies();
+  renderTables();
+  updateStats();
+  toast('تم إرسال التذكيرات', 'success');
+}
+
+// ══════════════════════════════════════════
+// PROXY SETUP
+// ══════════════════════════════════════════
+function setupProxy() {
+  const url = prompt('الصق رابط Apps Script Web App هنا:');
+  if (url && url.startsWith('https://')) {
+    localStorage.setItem('jm_proxy', url);
+    updateProxyStatus();
+    toast('✅ تم حفظ رابط الـ Proxy!', 'success');
+  } else if (url) {
+    toast('❌ الرابط غير صحيح — يجب أن يبدأ بـ https://', 'error');
+  }
+}
+
+function updateProxyStatus() {
+  const el = document.getElementById('proxy-status');
+  if (!el) return;
+  const url = localStorage.getItem('jm_proxy');
+  if (url) {
+    el.innerHTML = '<span style="color:var(--green)">✅ Proxy مفعّل</span>';
+  } else {
+    el.innerHTML = '<span style="color:var(--red)">❌ Proxy غير مفعّل</span>';
+  }
+}
+
+// ══════════════════════════════════════════
+// UTILS
+// ══════════════════════════════════════════
+let toastTimer;
+function toast(msg, type='info') {
+  clearTimeout(toastTimer);
+  let el = document.getElementById('toast-el');
+  if (!el) { el = document.createElement('div'); el.id = 'toast-el'; document.body.appendChild(el); }
+  el.className = `toast ${type}`;
+  el.textContent = msg;
+  el.style.display = 'block';
+  toastTimer = setTimeout(() => { el.style.display = 'none'; }, 4000);
+}
+
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+</script>
+
+<!-- PROXY SETUP INSTRUCTIONS -->
+<div id="proxy-notice" style="display:none"></div>
+
+<script>
+// Check if proxy is set up
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    if (localStorage.getItem('jm_config') && !localStorage.getItem('jm_proxy')) {
+      // Show proxy setup notice
+      const notice = document.createElement('div');
+      notice.style.cssText = 'position:fixed;bottom:20px;right:20px;z-index:999;background:#111;border:1px solid var(--orange);padding:16px;max-width:320px;font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--orange);';
+      notice.innerHTML = `
+        <div style="font-weight:700;margin-bottom:8px">⚠️ إعداد مطلوب</div>
+        <div style="color:#888;font-size:10px;line-height:1.8;margin-bottom:12px">
+          لتفعيل الإرسال المباشر، تحتاج إعداد<br>
+          <strong style="color:var(--gold)">Google Apps Script Proxy</strong><br>
+          (مجاني — 5 دقائق فقط)
+        </div>
+        <button onclick="showProxyGuide()" class="btn btn-ghost btn-sm btn-full">📖 عرض التعليمات</button>
+        <button onclick="setupProxy()" class="btn btn-primary btn-sm btn-full" style="margin-top:6px">🔗 أدخل الرابط</button>
+        <div onclick="this.parentElement.remove()" style="text-align:center;margin-top:8px;color:#333;cursor:pointer;font-size:9px">إغلاق</div>
+      `;
+      document.body.appendChild(notice);
+    }
+  }, 1500);
+});
+
+function showProxyGuide() {
+  const guide = document.createElement('div');
+  guide.style.cssText = 'position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.95);display:flex;align-items:center;justify-content:center;padding:20px';
+  guide.innerHTML = `
+    <div style="background:#111;border:1px solid var(--gold);padding:28px;max-width:560px;width:100%;max-height:90vh;overflow-y:auto">
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--gold);margin-bottom:4px">إعداد Apps Script Proxy</div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted);margin-bottom:20px">مرة واحدة — مجاني — 5 دقائق</div>
+
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--text);line-height:2.2">
+        <div style="color:var(--gold);margin-bottom:6px">الخطوة 1:</div>
+        افتح <a href="https://script.google.com/home/projects/create" target="_blank" style="color:var(--blue)">script.google.com</a> وأنشئ مشروعاً جديداً
+        <br><br>
+
+        <div style="color:var(--gold);margin-bottom:6px">الخطوة 2:</div>
+        احذف الكود وألصق هذا الكود:
+      </div>
+
+      <pre style="background:#060606;border:1px solid #222;padding:14px;font-family:'IBM Plex Mono',monospace;font-size:10px;color:#aaa;overflow-x:auto;margin:12px 0;white-space:pre-wrap">function doPost(e) {
+  var data = JSON.parse(e.postData.contents);
+  var options = {
+    name: data.fromName,
+    replyTo: data.fromEmail,
+  };
+  if (data.cvBase64) {
+    var cv = Utilities.newBlob(
+      Utilities.base64Decode(data.cvBase64),
+      'application/pdf',
+      data.cvName || 'Lebenslauf.pdf'
+    );
+    options.attachments = [cv];
+  }
+  GmailApp.sendEmail(data.to, data.subject, data.body, options);
+  return ContentService.createTextOutput(
+    JSON.stringify({success: true})
+  ).setMimeType(ContentService.MimeType.JSON);
+}</pre>
+
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--text);line-height:2.2">
+        <div style="color:var(--gold);margin-bottom:6px">الخطوة 3:</div>
+        اضغط <strong>Deploy → New Deployment</strong><br>
+        اختر <strong>Web App</strong><br>
+        في "Who has access" اختر <strong>Anyone</strong><br>
+        اضغط <strong>Deploy</strong> وانسخ الرابط
+        <br><br>
+
+        <div style="color:var(--gold);margin-bottom:6px">الخطوة 4:</div>
+        ارجع هنا وأدخل الرابط
+      </div>
+
+      <div style="display:flex;gap:8px;margin-top:20px">
+        <button onclick="setupProxy();this.closest('div[style*=fixed]').remove()" class="btn btn-primary btn-sm">🔗 أدخل الرابط</button>
+        <button onclick="this.closest('div[style*=fixed]').remove()" class="btn btn-ghost btn-sm">إغلاق</button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(guide);
+}
+</script>
+
+</body>
+</html>
