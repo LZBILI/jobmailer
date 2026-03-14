@@ -462,7 +462,10 @@ function saveConfig() {
   const pass = document.getElementById('cfg-pass').value.trim();
   const api = document.getElementById('cfg-api').value.trim();
 
-  if (!name || !gmail || !pass || !api) return toast('أكمل الحقول المطلوبة *', 'error');
+  if (!name) return alert('❌ أدخل الاسم الكامل');
+  if (!gmail) return alert('❌ أدخل Gmail');
+  if (!pass) return alert('❌ أدخل App Password');
+  if (!api) return alert('❌ أدخل API Key');
 
   config = {
     name, gmail, pass, api,
@@ -472,12 +475,16 @@ function saveConfig() {
     startDate: localStorage.getItem('jm_start') || new Date().toISOString(),
   };
 
-  localStorage.setItem('jm_start', config.startDate);
-  localStorage.setItem('jm_config', JSON.stringify(config));
-  if (cvBase64) { localStorage.setItem('jm_cv', cvBase64); localStorage.setItem('jm_cvname', cvFileName); }
+  try {
+    localStorage.setItem('jm_start', config.startDate);
+    localStorage.setItem('jm_config', JSON.stringify(config));
+    if (cvBase64) { localStorage.setItem('jm_cv', cvBase64); localStorage.setItem('jm_cvname', cvFileName); }
+  } catch(e) {
+    console.log('localStorage error:', e);
+  }
 
   showMain();
-  toast('✅ تم الحفظ!', 'success');
+  alert('✅ تم الحفظ! جاري الانتقال...');
 }
 
 function showSettings() {
